@@ -49,7 +49,7 @@ export default function SeriesDetails({navigation}: RootStackScreenProps<"Series
   const styles = useMemo(() => getGlobalStyles({colors}), [colors])
   
   const [ seriesDetails, episodeList, saveCurrentEpisode ] = useStore((state) => [ state.seriesDetails, state.episodeList, state.saveCurrentEpisode ], shallow)
-  const sections = episodeList.reduce((accum: any, current: ItemType) => {
+  const sections = episodeList?.reduce((accum: any, current: ItemType) => {
     let seasons = accum.find(((x: { season: number; }) => x.season === current.season))
     if(!seasons) {
       seasons = { season: current?.season, data: [] }

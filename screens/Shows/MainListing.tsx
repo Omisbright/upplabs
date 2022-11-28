@@ -9,27 +9,29 @@ import { View } from '../../components/Themed';
 import { hp, wp } from '../../constants/constData';
 import useStore from "../../state/store";
 import { RootStackScreenProps } from '../../types';
+import { useFetchShows, useGetEpisodes, useGetSeriesInformation } from '../../hooks/useFetchShows';
 
 export default function MainListing({ navigation }: RootStackScreenProps<'MainListing'>) { 
-
-  const {isLoading, error, data: allShows} = useQuery('repoData', fetchAllShows)
 
   const { colors } = useTheme();
   const styles = React.useMemo(() => getGlobalStyles({colors}), [colors])
 
-  function fetchAllShows () {
-    return fetch(`https://api.tvmaze.com/shows`)
-    .then((response) => response.json())
-  };
+  const { data: allShows } = useFetchShows();
 
   const [ searchedItem, setSearchedItem] = useState<string>()
   const [ newList, setNewList] = useState(allShows);
+  const [ currentId, setCurrentId] = useState<number>()
+
   const [saveSeriesDetails, saveEpisodeList ] = useStore((state) => [state.saveSeriesDetails, state.saveEpisodeList], shallow)
+
+  const { data: seriesDetails, isLoading: seriesLoading } = useGetSeriesInformation(currentId)
+  const { data: episodesList, isLoading: episodesLoading } = useGetEpisodes(currentId)
+
 
   const search = (item: string) => {
     setSearchedItem(item)
     let list: any = [];
-    allShows.forEach((datum: any) => {
+    allShows?.forEach((datum: any) => {
       let source = `${datum?.name}`.toLowerCase()
       if(source.includes(item.toLowerCase())) {
         list.push(datum)
@@ -39,18 +41,13 @@ export default function MainListing({ navigation }: RootStackScreenProps<'MainLi
   };
 
   const getSeriesInformation = (id: number) => {
-    Promise.all([
-      axios.get(`https://api.tvmaze.com/shows/${id}`),
-      axios.get(`https://api.tvmaze.com/shows/${id}/episodes`)
-    ])
-    .then((allResponses) => {
-      const seriesDetails = allResponses[0]
-      const episodeList = allResponses[1]
+    setCurrentId(id)
 
-      saveSeriesDetails(seriesDetails?.data)
-      saveEpisodeList(episodeList?.data)
+    if(!seriesLoading && !episodesLoading) {
+      saveSeriesDetails(seriesDetails)
+      saveEpisodeList(episodesList)
       navigation.navigate("SeriesDetails")
-    })
+    }
   }
 
   return (

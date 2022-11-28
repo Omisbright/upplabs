@@ -7,12 +7,13 @@ import { DarkTheme, DefaultTheme, NavigationContainer, useNavigation } from '@re
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ColorSchemeName, Pressable, Text } from 'react-native';
-
-import EpisodeDetails from '../screens/Shows/EpisodeDetails';
-import MainListing from '../screens/Shows/MainListing';
-import SeriesDetails from '../screens/Shows/SeriesDetails';
-import PinPage from '../screens/Auth/Pin';
-import OptionsPage from '../screens/Options/OptionsPage';
+import { 
+  EpisodeDetails, 
+  MainListing, 
+  SeriesDetails 
+} from '../screens/Shows';
+import { PinPage } from '../screens/Auth';
+import { OptionsPage } from '../screens/Options';
 import LinkingConfiguration from './LinkingConfiguration';
 import { Entypo } from '@expo/vector-icons';
 
@@ -53,11 +54,11 @@ function RootNavigator() {
 
   return (
     <Stack.Navigator>
-          <Stack.Screen name="PinPage" component={PinPage} options={{ title: 'PIN' }} />
           <Stack.Screen name="MainListing" component={MainListing} options={{ headerLeft: renderMenu, title: 'Main Listing' }} />
           <Stack.Screen name="SeriesDetails" component={SeriesDetails} options={{ title: 'Series Details' }} />
           <Stack.Screen name="EpisodeDetails" component={EpisodeDetails} options={{ title: 'Episode Details' }} />
           <Stack.Screen name="OptionsPage" component={OptionsPage} options={{ title: 'Menu' }} />
+          <Stack.Screen name="PinPage" component={PinPage} options={{ title: 'PIN' }} />
     </Stack.Navigator>
   );
 }

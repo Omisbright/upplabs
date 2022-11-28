@@ -37,14 +37,12 @@ const PinPage = ({navigation}: RootStackScreenProps<"PinPage">) => {
   };
 
   const onLogin = async (pin: string) => {
-    console.log("baba")
     try {
       const value = await AsyncStorage.getItem('pin')
       if(value !== pin) {
-        console.log("value !== pin", value !== pin)
           Alert.alert(
-            "Alert Title",
-            "My Alert Msg",
+            "Error",
+            "Wrong Password",
             [
               {
                 text: "Cancel",
