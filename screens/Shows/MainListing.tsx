@@ -1,15 +1,15 @@
 import { ExtendedTheme, useTheme } from '@react-navigation/native';
-import axios from "axios";
 import React, { useState } from "react";
 import { FlatList, StyleSheet, TextInput } from 'react-native';
-import { useQuery } from 'react-query';
 import shallow from 'zustand/shallow';
 import MainListingComponent from '../../components/MainListingComponent';
 import { View } from '../../components/Themed';
 import { hp, wp } from '../../constants/constData';
+import useFetchShows from '../../hooks/useFetchShows';
+import useGetEpisodes from '../../hooks/useGetEpisodes';
+import useGetSeriesInformation from '../../hooks/useGetSeriesInformation';
 import useStore from "../../state/store";
 import { RootStackScreenProps } from '../../types';
-import { useFetchShows, useGetEpisodes, useGetSeriesInformation } from '../../hooks/useFetchShows';
 
 export default function MainListing({ navigation }: RootStackScreenProps<'MainListing'>) { 
 
@@ -26,7 +26,6 @@ export default function MainListing({ navigation }: RootStackScreenProps<'MainLi
 
   const { data: seriesDetails, isLoading: seriesLoading } = useGetSeriesInformation(currentId)
   const { data: episodesList, isLoading: episodesLoading } = useGetEpisodes(currentId)
-
 
   const search = (item: string) => {
     setSearchedItem(item)
